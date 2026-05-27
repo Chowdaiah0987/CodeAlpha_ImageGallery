@@ -272,6 +272,91 @@ input, select { font-family: inherit; }
 .gallery-card:nth-child(12) { animation-delay: 0.37s; }
 
 /* RESPONSIVE */
-@media (max-width: 900px) { .category-nav { display: none; } .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
-@media (max-width: 600px) { .header { padding: 0 14px; } .profile-btn span { display: none; } .profile-btn { padding: 7px 10px; } .main { padding: calc(var(--header-h) + 18px) 12px 30px; } .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .sidebar { width: 100%; max-width: 320px; } .lightbox-container { width: 98vw; max-height: 98vh; } .lb-img-wrap { max-height: 55vh; } .lb-nav { width: 38px; height: 38px; } .modal-box { padding: 28px 20px 22px; } }
-@media (max-width: 360px) { .gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; } }
+@media (max-width: 900px) {
+  .category-nav { display: none; }
+  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  /* Header: hamburger + logo on left, login icon on right — nothing in between */
+  .header {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .header-left {
+    flex: 1;
+    gap: 10px;
+  }
+  /* Hide logo text on very small screens */
+  .logo span {
+    display: none;
+  }
+  /* Hide theme toggle and slideshow on mobile to save space */
+  .theme-toggle,
+  .slideshow-btn {
+    display: none;
+  }
+  /* Login button: icon-only pill, always visible */
+  .profile-btn {
+    padding: 8px 12px;
+    gap: 0;
+    min-width: 40px;
+    height: 36px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .profile-btn span {
+    display: none;
+  }
+  .profile-btn i {
+    font-size: 1rem;
+  }
+  /* Main content */
+  .main { padding: calc(var(--header-h) + 14px) 10px 28px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .gallery-info h1 { font-size: 1.15rem; }
+  /* Sidebar full-width */
+  .sidebar { width: min(100vw, 320px); }
+  /* Lightbox */
+  .lightbox-container { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; }
+  .lb-img-wrap { max-height: 60vh; }
+  .lb-nav { width: 38px; height: 38px; font-size: 0.85rem; }
+  /* Modal */
+  .modal-box { width: 95vw; padding: 28px 18px 22px; border-radius: 16px; }
+  .modal-title { font-size: 1.2rem; }
+}
+
+/* Tiny phones */
+@media (max-width: 360px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .header { padding: 0 10px; }
+}
+
+/* Make theme + slideshow available via sidebar on mobile instead */
+@media (min-width: 601px) {
+  .mobile-toolbar { display: none; }
+}
+
+/* Mobile toolbar (inside sidebar, visible only on mobile) */
+.mobile-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-tool-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px;
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+}
+.mobile-tool-btn:hover, .mobile-tool-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
