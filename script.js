@@ -282,15 +282,11 @@ function startSlideshow(){
   if(!lightbox.classList.contains("open")&&filtered.length>0) openLightbox(0);
   slideShowTimer=setInterval(()=>{ lightboxIdx=(lightboxIdx+1)%filtered.length; updateLightbox(); },3000);
   slideshowBtn.classList.add("playing"); slideshowBtn.querySelector("i").className="fa-solid fa-pause";
-  const mi=document.getElementById("mobileSlideshowIcon"); if(mi) mi.className="fa-solid fa-pause";
-  const mb=document.getElementById("mobileSlideshowBtn"); if(mb) mb.classList.add("active");
   showToast("▶ Slideshow started","success");
 }
 function stopSlideshow(){
   clearInterval(slideShowTimer); slideShowTimer=null;
   slideshowBtn.classList.remove("playing"); slideshowBtn.querySelector("i").className="fa-solid fa-play";
-  const mi=document.getElementById("mobileSlideshowIcon"); if(mi) mi.className="fa-solid fa-play";
-  const mb=document.getElementById("mobileSlideshowBtn"); if(mb) mb.classList.remove("active");
 }
 slideshowBtn.addEventListener("click",()=>{ if(slideShowTimer){ stopSlideshow(); showToast("⏸ Paused"); } else startSlideshow(); });
 
@@ -299,24 +295,8 @@ gridViewBtn.addEventListener("click",()=>{ isMasonry=false; galleryGrid.classLis
 masonryViewBtn.addEventListener("click",()=>{ isMasonry=true; galleryGrid.classList.add("masonry"); masonryViewBtn.classList.add("active"); gridViewBtn.classList.remove("active"); renderGallery(); });
 
 // THEME
-function applyTheme(t){
-  document.documentElement.setAttribute("data-theme",t);
-  localStorage.setItem("gallery_theme",t);
-  const icon = t==="dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
-  themeToggle.querySelector("i").className = icon;
-  const mIcon = document.getElementById("mobileThemeIcon");
-  if(mIcon) mIcon.className = icon;
-}
+function applyTheme(t){ document.documentElement.setAttribute("data-theme",t); localStorage.setItem("gallery_theme",t); themeToggle.querySelector("i").className=t==="dark"?"fa-solid fa-moon":"fa-solid fa-sun"; }
 themeToggle.addEventListener("click",()=>applyTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark"));
-
-// Mobile toolbar wiring
-const mobileThemeBtn = document.getElementById("mobileThemeBtn");
-const mobileSlideshowBtn = document.getElementById("mobileSlideshowBtn");
-if(mobileThemeBtn) mobileThemeBtn.addEventListener("click",()=>applyTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark"));
-if(mobileSlideshowBtn) mobileSlideshowBtn.addEventListener("click",()=>{
-  closeSidebar();
-  setTimeout(()=>{ if(slideShowTimer){ stopSlideshow(); showToast("⏸ Paused"); } else startSlideshow(); },300);
-});
 
 // UPLOAD
 uploadArea.addEventListener("click",()=>fileInput.click());
