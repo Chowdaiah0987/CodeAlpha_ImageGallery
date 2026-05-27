@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Gallery</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="logo">
+        <i class="fa-solid fa-camera-retro"></i>
+        <span>My Gallery</span>
+      </div>
+    </div>
+
+    <!-- Only 2-3 top categories shown here, rest in sidebar -->
+    <nav class="category-nav" id="categoryNav">
+      <button class="cat-btn active" data-cat="all">All</button>
+      <button class="cat-btn" data-cat="nature">Nature</button>
+      <button class="cat-btn" data-cat="animals">Animals</button>
+      <button class="cat-btn more-cats-btn" id="moreCatsBtn">
+        <i class="fa-solid fa-grip"></i> More
+      </button>
+    </nav>
+
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="slideshow-btn" id="slideshowBtn" title="Auto Slideshow">
+        <i class="fa-solid fa-play"></i>
+      </button>
+      <!-- LOGIN BUTTON -->
+      <button class="profile-btn" id="loginBtn">
+        <i class="fa-solid fa-user"></i>
+        <span>Login</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Explore</span>
+      <button class="sidebar-close" id="sidebarClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- CATEGORY SEARCH — to find categories -->
+    <div class="sidebar-section">
+      <h3 class="section-label"><i class="fa-solid fa-layer-group"></i> Browse Categories</h3>
+      <div class="cat-search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="catSearchInput" placeholder="Search categories…" />
+        <button class="search-clear" id="catSearchClear"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <!-- All categories listed here, filterable -->
+      <div class="sidebar-cats" id="sidebarCats"></div>
+    </div>
+
+    <!-- FAVORITES -->
+    <div class="sidebar-section">
+      <div class="section-label-row">
+        <h3 class="section-label"><i class="fa-solid fa-heart"></i> Favorites <span class="count-badge" id="favCount">0</span></h3>
+        <button class="clear-all-btn" id="clearFavsBtn"><i class="fa-solid fa-trash"></i> Clear All</button>
+      </div>
+      <div class="sidebar-thumbs" id="favThumbsContainer">
+        <p class="empty-msg">No favorites yet</p>
+      </div>
+    </div>
+
+    <!-- DOWNLOADED -->
+    <div class="sidebar-section">
+      <div class="section-label-row">
+        <h3 class="section-label"><i class="fa-solid fa-download"></i> Downloaded <span class="count-badge" id="dlCount">0</span></h3>
+        <button class="clear-all-btn" id="clearDlsBtn"><i class="fa-solid fa-trash"></i> Clear All</button>
+      </div>
+      <div class="sidebar-thumbs" id="dlThumbsContainer">
+        <p class="empty-msg">No downloads yet</p>
+      </div>
+    </div>
+
+    <!-- ADD IMAGE -->
+    <div class="sidebar-section">
+      <h3 class="section-label"><i class="fa-solid fa-cloud-arrow-up"></i> Add Image</h3>
+      <div class="upload-area" id="uploadArea">
+        <i class="fa-solid fa-plus"></i>
+        <p>Click or drag to upload</p>
+        <input type="file" id="fileInput" accept="image/*" hidden/>
+      </div>
+      <div class="upload-form" id="uploadForm" style="display:none;">
+        <img id="uploadPreview" src="" alt="preview"/>
+        <input type="text" id="uploadName" placeholder="Image title…" />
+        <div class="select-wrap">
+          <select id="uploadCategory">
+            <option value="animals">🐾 Animals</option>
+            <option value="nature">🌿 Nature</option>
+            <option value="cars">🚗 Cars</option>
+            <option value="wallpapers">🖼️ Wallpapers</option>
+            <option value="travel">✈️ Travel</option>
+            <option value="food">🍕 Food</option>
+            <option value="sports">⚽ Sports</option>
+            <option value="art">🎨 Art</option>
+            <option value="architecture">🏛️ Architecture</option>
+            <option value="people">👤 People</option>
+            <option value="__custom__">✏️ New category…</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+        <input type="text" id="customCategoryInput" placeholder="Type new category name…" style="display:none;"/>
+        <div class="upload-actions">
+          <button class="btn-cancel" id="uploadCancel">Cancel</button>
+          <button class="btn-add" id="uploadAdd"><i class="fa-solid fa-plus"></i> Add to Gallery</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box" id="loginBox">
+      <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+
+      <!-- Login Form -->
+      <div class="modal-panel" id="panelLogin">
+        <div class="modal-logo"><i class="fa-solid fa-camera-retro"></i></div>
+        <h2 class="modal-title">Welcome back</h2>
+        <p class="modal-sub">Sign in to your Gallery account</p>
+        <div class="form-group">
+          <label>Email</label>
+          <div class="input-icon-wrap"><i class="fa-solid fa-envelope"></i><input type="email" id="loginEmail" placeholder="you@example.com"/></div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="loginPassword" placeholder="••••••••"/>
+          <button class="toggle-pw" id="toggleLoginPw"><i class="fa-solid fa-eye"></i></button></div>
+        </div>
+        <div class="form-row"><label class="checkbox-label"><input type="checkbox" id="rememberMe"/> Remember me</label><a class="link-btn" href="#">Forgot password?</a></div>
+        <button class="submit-btn" id="loginSubmit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</button>
+        <p class="switch-text">Don't have an account? <button class="link-btn" id="goToRegister">Create one</button></p>
+      </div>
+
+      <!-- Register Form -->
+      <div class="modal-panel" id="panelRegister" style="display:none;">
+        <div class="modal-logo"><i class="fa-solid fa-camera-retro"></i></div>
+        <h2 class="modal-title">Create account</h2>
+        <p class="modal-sub">Join My Gallery today</p>
+        <div class="form-group">
+          <label>Full Name</label>
+          <div class="input-icon-wrap"><i class="fa-solid fa-user"></i><input type="text" id="regName" placeholder="Your name"/></div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <div class="input-icon-wrap"><i class="fa-solid fa-envelope"></i><input type="email" id="regEmail" placeholder="you@example.com"/></div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-icon-wrap"><i class="fa-solid fa-lock"></i><input type="password" id="regPassword" placeholder="Min. 6 characters"/>
+          <button class="toggle-pw" id="toggleRegPw"><i class="fa-solid fa-eye"></i></button></div>
+        </div>
+        <button class="submit-btn" id="registerSubmit"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+        <p class="switch-text">Already have an account? <button class="link-btn" id="goToLogin">Sign in</button></p>
+      </div>
+
+      <!-- Logged In State -->
+      <div class="modal-panel" id="panelLoggedIn" style="display:none;">
+        <div class="modal-avatar" id="modalAvatar">A</div>
+        <h2 class="modal-title" id="loggedInName">Alex</h2>
+        <p class="modal-sub" id="loggedInEmail">alex@example.com</p>
+        <div class="profile-stats">
+          <div class="stat"><span id="statFavs">0</span><small>Favorites</small></div>
+          <div class="stat"><span id="statDls">0</span><small>Downloads</small></div>
+          <div class="stat"><span id="statUploads">0</span><small>Uploads</small></div>
+        </div>
+        <button class="submit-btn logout-btn" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main" id="main">
+    <div class="gallery-header">
+      <div class="gallery-info">
+        <h1 id="galleryTitle">All Photos</h1>
+        <span id="galleryCount" class="gallery-count">0 photos</span>
+      </div>
+      <div class="view-toggles">
+        <button class="view-btn active" id="gridViewBtn" title="Grid View"><i class="fa-solid fa-grip"></i></button>
+        <button class="view-btn" id="masonryViewBtn" title="Masonry View"><i class="fa-solid fa-table-columns"></i></button>
+      </div>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+    <div class="no-results" id="noResults" style="display:none;">
+      <i class="fa-solid fa-photo-film"></i>
+      <p>No images found</p>
+    </div>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-container">
+      <div class="lightbox-header">
+        <div class="lightbox-meta">
+          <span id="lbTitle" class="lb-title"></span>
+          <span id="lbCategory" class="lb-cat"></span>
+        </div>
+        <div class="lightbox-actions">
+          <button class="lb-btn fav-btn" id="lbFavBtn" title="Favorite"><i class="fa-regular fa-heart"></i></button>
+          <button class="lb-btn" id="lbFullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+          <button class="lb-btn" id="lbDownloadBtn" title="Download"><i class="fa-solid fa-download"></i></button>
+          <button class="lb-btn close-btn" id="lbClose" title="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="lightbox-body">
+        <button class="lb-nav prev" id="lbPrev"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="lb-img-wrap"><img id="lbImg" src="" alt="" /></div>
+        <button class="lb-nav next" id="lbNext"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="lightbox-strip" id="lightboxStrip"></div>
+    </div>
+  </div>
+
+  <button class="fullscreen-exit-btn" id="fullscreenExitBtn" style="display:none;">
+    <i class="fa-solid fa-compress"></i> Exit Fullscreen
+  </button>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
